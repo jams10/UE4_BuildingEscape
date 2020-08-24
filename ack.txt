@@ -1,0 +1,13 @@
+1. Inheritance(상속)는(은) "is a" 관계. ex) Character "is a" Pawn, Pawn "is an" Actor.
+   Component는 "has a" 관계.
+
+2. Component는 공통의 행동, 기능을 공유하는 데 사용함.
+
+3. 작업물을 보호하기 위해 창-프로젝트 세팅의 법률고지 부분에 저작권 관련 표시를 해둘 것.
+
+4. 커스텀 C++ 컴포넌트를 생성했을 때, 해당 컴포넌트 헤더 파일의 #include 지시문 중 
+   제일 마지막이 "컴포넌트 이름.generated.h" 가 되도록 순서를 구성해야 함.
+
+5. 해당 컴포넌트의 생성자에서 프레임마다 호출되는 TickComponent가 필요 없다면, 
+   퍼포먼스를 위해 PrimaryComponentTick.bCanEverTick 변수 값을 false로 설정하면 된다.
+   
