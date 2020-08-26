@@ -19,8 +19,9 @@ void UWorldPosition::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	UE_LOG( LogTemp, Error, TEXT( "Error Message!" ) );
+	UE_LOG( LogTemp, Warning, TEXT( "Warning Message!" ) );
+	UE_LOG( LogTemp, Display, TEXT( "Display Message!" ) );
 }
 
 

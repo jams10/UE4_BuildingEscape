@@ -10,4 +10,13 @@
 
 5. 해당 컴포넌트의 생성자에서 프레임마다 호출되는 TickComponent가 필요 없다면, 
    퍼포먼스를 위해 PrimaryComponentTick.bCanEverTick 변수 값을 false로 설정하면 된다.
+
+6. 커스텀 클래스 지우기
+   지우고 싶은 클래스에 대해 프로젝트에 해당 클래스가 컴포넌트로 붙어있지 않아야 함. (오브젝트에 붙어있을 경우 다 지울 것.)
+   그 후에 Binaries 폴더에서 해당 파일을 지우고 Binaries 폴더 자체를 지우면 프로젝트를 다시 켰을 때 리빌딩 되서 제거된 상태로 돌아옴.
+
+7. Unreal output log (디버그용 로그 출력)
+
+   UE_LOG( Category, Verbosity, TEXT("text is here"));
+   ex) UE_LOG( LogTemp, Warning, TEXT("text is here")); // Error : 빨강, Warning : 노랑, Display : 회색
    
