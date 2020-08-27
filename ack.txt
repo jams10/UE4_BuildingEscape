@@ -19,4 +19,13 @@
 
    UE_LOG( Category, Verbosity, TEXT("text is here"));
    ex) UE_LOG( LogTemp, Warning, TEXT("text is here")); // Error : 빨강, Warning : 노랑, Display : 회색
+
+8. UE_LOG 출력 포맷
+
+   FString Log = TEXT("Hello!");		         // FString : 언리얼에서 기본적으로 사용되는 문자열 클래스.
+   UE_LOG(LogTemp, Warning, TEXT("%s"), *Log);        // %s의 경우 TCHAR* 타입을 받음. 이는 *FString에 대응.
+
+   포인터 쓸 경우 
+   FString* PtLog = &Log;
+   UE_LOG(LogTemp, Warning, TEXT("%s"), **PtLog);  
    
