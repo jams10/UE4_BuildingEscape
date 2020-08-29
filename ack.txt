@@ -23,9 +23,12 @@
 8. UE_LOG 출력 포맷
 
    FString Log = TEXT("Hello!");		         // FString : 언리얼에서 기본적으로 사용되는 문자열 클래스.
-   UE_LOG(LogTemp, Warning, TEXT("%s"), *Log);        // %s의 경우 TCHAR* 타입을 받음. 이는 *FString에 대응.
+   UE_LOG(LogTemp, Warning, TEXT("%s"), *Log);        // UE_LOG의 경우 TCHAR 타입을 원함. *를 사용해 string을 TCHAR 타입으로 바꿀 수 있음.
 
    포인터 쓸 경우 
    FString* PtLog = &Log;
    UE_LOG(LogTemp, Warning, TEXT("%s"), **PtLog);  
+
+9. GetActorTransform
+   해당 함수는 Location | Rotation | Scale 순의 포맷으로 데이터를 리턴함.
    
