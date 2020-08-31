@@ -36,3 +36,6 @@
 
 11. 모델들을 레벨에 배치할 때 해당 모델들이 결합하기 적절하게 모델링이 되었다면 shift + 클릭으로 한번에 배치할 수 있음.
     (문 프레임과 문 같은 경우)
+
+12. Modular asset에서 발생하는 라이팅 문제 
+     https://forums.unrealengine.com/development-discussion/content-creation/18356-modular-asset-lighting-problem?46269-Modular-Asset-Lighting-Problem=
