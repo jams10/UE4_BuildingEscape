@@ -39,3 +39,22 @@
 
 12. Modular asset에서 발생하는 라이팅 문제 
      https://forums.unrealengine.com/development-discussion/content-creation/18356-modular-asset-lighting-problem?46269-Modular-Asset-Lighting-Problem=
+
+13. Material Texture Scale 조정
+     Texture Sample의 UV 에 Texture Coordinate, Scalar Parameter를 Multiply 노드를 통해 연결. 인스턴스 만들어서 오브젝트 마다 따로 지정 가능.
+
+     수직, 수평 스케일을 각각 따로 조정하고 싶은 경우에 ScalarParameter를 두개 생성하여 AppendVector 노드로 합치고 이를 TexCoord와 Multiply.
+
+14. AppendVector
+     AppendVector (벡터 덧붙이기) 표현식은 채널을 합쳐 원래보다 채널 수가 많은 벡터를 만들 수 있음.
+     예를 들어 두 개의 Constant 값을 덧붙이면 Constant2Vector 값을 만들 수 있음.
+
+     https://docs.unrealengine.com/ko/Engine/Rendering/Materials/ExpressionReference/VectorOps/index.html#appendvector
+
+15. Implicitly Conversion
+    언리얼의 경우 코드 작성 시 알아서 형변환 해줌. 
+    
+    ex) float MyFloat = 10; // int -> float	float MyFloat = 10.0; // double -> float	float MyFloat = 10.0f; // float
+
+16. FRotator
+     Pitch(y축), Roll(x축), Yaw(z축) 으로 구성된 구조체
