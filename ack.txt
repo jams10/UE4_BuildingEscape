@@ -58,3 +58,13 @@
 
 16. FRotator
      Pitch(y축), Roll(x축), Yaw(z축) 으로 구성된 구조체
+
+17. Low poly collision 만들기
+     BSP를 이용, 해당 오브젝트를 감싼다.(collision을 넣을 부분) 그 후에 coliision 설정창에서 simple collision 추가 후에 collision complexity를 
+     Use complex collision as simple로 선택함.
+
+18. Lerp
+    선형보간 - Linear Interpolation 또는 Lerp 는 알파 입력에 따라 A 와 B 입력을 블렌딩한 결과를 반환.
+    주어진 예제에서 알파가 0 일 때, A 가 100% 반환. 알파가 1 이면, B 가 100% 반환.
+   
+    따라서, Lerping이 타켓 값에 가까워질수록 느려지는 이유는 증가하는 작은 값에 대해 고정된 비율을 취하기 때문.
