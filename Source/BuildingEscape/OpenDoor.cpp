@@ -31,9 +31,17 @@ void UOpenDoor::BeginPlay()
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	// 이런식으로 작성할 경우에 언리얼 에디터 상에서 IsOverlappingActor의 매개변수가 되는
+	// Actor가 할당되지 않아 Null pointer 에러가 발생할 가능성이 있음.
+	if( PressurePlate->IsOverlappingActor( ActorThatOpens ) )
+	{
+		OpenDoor( DeltaTime );
+	}
+}
 
-	// UE_LOG(LogTemp, Warning, TEXT("Yaw is : %f"), GetOwner()->GetActorLocation().Yaw);
-
+void UOpenDoor::OpenDoor( float DeltaTime )
+{
 	CurrentYaw = FMath::FInterpTo( CurrentYaw, TargetYaw, DeltaTime, 2 );
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
