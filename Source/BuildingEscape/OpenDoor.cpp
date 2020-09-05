@@ -24,6 +24,11 @@ void UOpenDoor::BeginPlay()
 	InitialYaw = GetOwner()->GetActorRotation().Yaw;
 	CurrentYaw = InitialYaw;
 	TargetYaw += InitialYaw;
+
+	if( !PressurePlate )
+	{
+		UE_LOG( LogTemp, Error, TEXT( "%s has OpenDoor Component, but has no Pressure plate." ), *GetOwner()->GetName() );
+	}
 }
 
 
@@ -32,9 +37,8 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
-	// 이런식으로 작성할 경우에 언리얼 에디터 상에서 PressurePlate가 할당 되지 않은 경우
-	// NULL 포인터를 가지고 IsOverlappingActor 함수를 호출하기 때문에 Crash가 일어남.
-	if( PressurePlate->IsOverlappingActor( ActorThatOpens ) )
+	// if(ptr) : 포인터가 NULL 포인터인지 여부를 간단하게 체크할 수 있음. null이 아닌 경우 조건을 만족.
+	if( PressurePlate && PressurePlate->IsOverlappingActor( ActorThatOpens ) )
 	{
 		OpenDoor( DeltaTime );
 	}
@@ -47,7 +51,7 @@ void UOpenDoor::OpenDoor( float DeltaTime )
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation( DoorRotation );
 
-	UE_LOG( LogTemp, Warning, TEXT( "Yaw is : %f" ), GetOwner()->GetActorRotation().Yaw );
+	//UE_LOG( LogTemp, Warning, TEXT( "Yaw is : %f" ), GetOwner()->GetActorRotation().Yaw );
 }
 
 // Frame에 독립적으로 수행. 상수 스텝 만큼 interpolate 0초 : 0도 -> 1초 : 45도 -> 2초 : 90도 (Linear Interpolation)
