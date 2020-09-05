@@ -32,8 +32,8 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
-	// 이런식으로 작성할 경우에 언리얼 에디터 상에서 IsOverlappingActor의 매개변수가 되는
-	// Actor가 할당되지 않아 Null pointer 에러가 발생할 가능성이 있음.
+	// 이런식으로 작성할 경우에 언리얼 에디터 상에서 PressurePlate가 할당 되지 않은 경우
+	// NULL 포인터를 가지고 IsOverlappingActor 함수를 호출하기 때문에 Crash가 일어남.
 	if( PressurePlate->IsOverlappingActor( ActorThatOpens ) )
 	{
 		OpenDoor( DeltaTime );
