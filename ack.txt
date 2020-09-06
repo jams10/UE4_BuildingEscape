@@ -73,3 +73,12 @@
 
      넘기고 싶은 변수 바로 위에 UPROPERTY( EditAnywhere ) 를 적어줌.
      이렇게 파라미터를 넘겨서 각 오브젝트 마다 파라미터 값을 달리하여 다른 동작을 하게 만들 수 있음.
+
+20. GetOwner()와 GetWorld()
+     
+    GetOwner() 함수는 bottom-up 방식의 search, GetWorld() 함수는 top-down 방식의 search
+    
+21. Default Pawn은 player의 몸. 일시적임(transient)
+     Player Controller는 player의 정신. 지속적임(persist) 
+
+    -> 이러한 구조로 Player Controller 클래스는 GetPawn() 함수를 가지고 있음.

@@ -1,6 +1,7 @@
 // Copyrights Jamin Heo 2020 
 
-
+#include "Engine/World.h"
+#include "GameFrameWork/PlayerController.h"
 #include "OpenDoor.h"
 #include "GameFrameWork/Actor.h"
 
@@ -29,6 +30,8 @@ void UOpenDoor::BeginPlay()
 	{
 		UE_LOG( LogTemp, Error, TEXT( "%s has OpenDoor Component, but has no Pressure plate." ), *GetOwner()->GetName() );
 	}
+
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 
@@ -39,14 +42,22 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	
 	// if(ptr) : 포인터가 NULL 포인터인지 여부를 간단하게 체크할 수 있음. null이 아닌 경우 조건을 만족.
 	if( PressurePlate && PressurePlate->IsOverlappingActor( ActorThatOpens ) )
-	{
+	{ 
 		OpenDoor( DeltaTime );
+		DoorLastOpened = GetWorld()->GetTimeSeconds();
+	}
+	else
+	{
+		if( GetWorld()->GetTimeSeconds() - DoorLastOpened > DoorCloseDelay )
+		{
+			CloseDoor( DeltaTime );
+		}
 	}
 }
 
 void UOpenDoor::OpenDoor( float DeltaTime )
 {
-	CurrentYaw = FMath::FInterpTo( CurrentYaw, TargetYaw, DeltaTime, 2 );
+	CurrentYaw = FMath::FInterpTo( CurrentYaw, TargetYaw, DeltaTime, 3 );
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation( DoorRotation );
@@ -54,8 +65,20 @@ void UOpenDoor::OpenDoor( float DeltaTime )
 	//UE_LOG( LogTemp, Warning, TEXT( "Yaw is : %f" ), GetOwner()->GetActorRotation().Yaw );
 }
 
+void UOpenDoor::CloseDoor( float DeltaTime )
+{
+	// Lerp 함수에서 세번째 매개변수인 Alpha 값이 1에 가까울 수록 두번째 매개변수 값이 더 많이 블렌딩 됨.
+	// 따라서 Alpha 값이 클 수록 문이 더 빨리 닫히게 됨.
+	CurrentYaw = FMath::Lerp( CurrentYaw, InitialYaw, DeltaTime * 2.f);
+	FRotator DoorRotation = GetOwner()->GetActorRotation();
+	DoorRotation.Yaw = CurrentYaw;
+	GetOwner()->SetActorRotation( DoorRotation );
+}
+
 // Frame에 독립적으로 수행. 상수 스텝 만큼 interpolate 0초 : 0도 -> 1초 : 45도 -> 2초 : 90도 (Linear Interpolation)
 // OpenDoor.Yaw = FMath::FInterpConstantTo( CurrentYaw, ActorRotation.Yaw + TargetYaw, DeltaTime, 45 );
 // 더 부드럽게 Interpolation 하고 싶은 경우
 // CurrentYaw = FMath::FInterpTo( CurrentYaw, TargetYaw, DeltaTime, 2 );
+
+// 현재 PC 에서 DeltaTime 값 : 0.008334
 
