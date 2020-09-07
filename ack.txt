@@ -82,3 +82,5 @@
      Player Controller는 player의 정신. 지속적임(persist) 
 
     -> 이러한 구조로 Player Controller 클래스는 GetPawn() 함수를 가지고 있음.
+
+22. 코드 블록 선택 후 위아래로 한꺼번에 이동 -> 여러 코드블록 선택 후 alt+방향키

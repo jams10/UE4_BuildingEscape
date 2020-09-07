@@ -24,7 +24,7 @@ void UOpenDoor::BeginPlay()
 
 	InitialYaw = GetOwner()->GetActorRotation().Yaw;
 	CurrentYaw = InitialYaw;
-	TargetYaw += InitialYaw;
+	OpenAngle += InitialYaw;
 
 	if( !PressurePlate )
 	{
@@ -57,7 +57,8 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UOpenDoor::OpenDoor( float DeltaTime )
 {
-	CurrentYaw = FMath::FInterpTo( CurrentYaw, TargetYaw, DeltaTime, 3 );
+	//CurrentYaw = FMath::FInterpTo( CurrentYaw, OpenAngle, DeltaTime, 3 );
+	CurrentYaw = FMath::Lerp( CurrentYaw, OpenAngle, DeltaTime * DoorOpenSpeed );
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation( DoorRotation );
@@ -69,16 +70,16 @@ void UOpenDoor::CloseDoor( float DeltaTime )
 {
 	// Lerp 함수에서 세번째 매개변수인 Alpha 값이 1에 가까울 수록 두번째 매개변수 값이 더 많이 블렌딩 됨.
 	// 따라서 Alpha 값이 클 수록 문이 더 빨리 닫히게 됨.
-	CurrentYaw = FMath::Lerp( CurrentYaw, InitialYaw, DeltaTime * 2.f);
+	CurrentYaw = FMath::Lerp( CurrentYaw, InitialYaw, DeltaTime * DoorCloseSpeed );
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation( DoorRotation );
 }
 
 // Frame에 독립적으로 수행. 상수 스텝 만큼 interpolate 0초 : 0도 -> 1초 : 45도 -> 2초 : 90도 (Linear Interpolation)
-// OpenDoor.Yaw = FMath::FInterpConstantTo( CurrentYaw, ActorRotation.Yaw + TargetYaw, DeltaTime, 45 );
+// OpenDoor.Yaw = FMath::FInterpConstantTo( CurrentYaw, ActorRotation.Yaw + OpenAngle, DeltaTime, 45 );
 // 더 부드럽게 Interpolation 하고 싶은 경우
-// CurrentYaw = FMath::FInterpTo( CurrentYaw, TargetYaw, DeltaTime, 2 );
+// CurrentYaw = FMath::FInterpTo( CurrentYaw, OpenAngle, DeltaTime, 2 );
 
 // 현재 PC 에서 DeltaTime 값 : 0.008334
 
