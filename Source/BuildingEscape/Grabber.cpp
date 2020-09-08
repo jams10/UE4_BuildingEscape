@@ -19,8 +19,7 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+
 }
 
 
@@ -29,6 +28,6 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	UE_LOG( LogTemp, Warning, TEXT( "%s's position : %s" ), *GetOwner()->GetName(), *GetOwner()->GetActorLocation().ToString() );
 }
 

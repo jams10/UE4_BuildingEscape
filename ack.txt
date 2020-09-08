@@ -94,3 +94,6 @@
 
 24. 월드 아웃라이너 탭에서 오브젝트 선택후 블루프린트 - select to blueprint로 블루프린트 클래스 만들 수 있음.
      유니티에서의 프리팹 개념과 비슷.
+
+25. 프로젝트 세팅에서 Default GameMode를 변경하면 GameMode 탭에 있는 Default Pawn 지정 등 여러 세팅들을 바꿀 수 있다.
+     이때, 커스텀 GameMode는 GameMode C++ 파생 클래스 혹은 블루프린트로 제작할 수 있다.
