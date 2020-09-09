@@ -97,3 +97,12 @@
 
 25. 프로젝트 세팅에서 Default GameMode를 변경하면 GameMode 탭에 있는 Default Pawn 지정 등 여러 세팅들을 바꿀 수 있다.
      이때, 커스텀 GameMode는 GameMode C++ 파생 클래스 혹은 블루프린트로 제작할 수 있다.
+
+26. GetPlayerViewPoint 함수
+     AI의 경우 Pawn의 눈에 해당하는 뷰 포인트. Human 플레이어의 경우 카메라의 뷰 포인트 리턴.\
+
+27. #define OUT 으로 참조 매개변수로 값을 전달하는 함수에 대해 알기 쉽게 매개변수 표현하기
+     함수(int& out_value)의 경우 매개변수를 넘길 때 함수(OUT value)로 넘겨 해당 함수가 참조를 통해 값을 전달하고 있음을 쉽게 확인할 수 있음.
+
+28. 에디터의 PlayerCollision 뷰모드로 레벨에 존재하는 오브젝트들의 콜리전 타입을 확인함으로써 빠뜨린 부분이나 잘못설정한 부분들을 
+     한눈에 파악할 수 있다.
