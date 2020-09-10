@@ -116,3 +116,6 @@
 	const AActor * InIgnoreActor  // 무시할 actor. line이 플레이어 pawn에서 나오는데 이때 라인의 일부분이 pawn 3D 오브젝트와
                                                      clipping 되므로, 콜리전 체크시에 계속해서 체크될 수 있음. 이를 위해 이 부분에 플레이어 Pawn 할당.
      )
+
+31. Physics Handle
+    피지컬 오브젝트를 움직이는 유틸리티 오브젝트 컴포넌트

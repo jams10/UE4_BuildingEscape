@@ -22,7 +22,15 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	// Physics handle 컴포넌트 체크
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if( PhysicsHandle )
+	{
+	}
+	else
+	{
+		UE_LOG( LogTemp, Error, TEXT( "%s has no Physics Component." ), *(GetOwner()->GetName()) );
+	}
 }
 
 // Called every frame
@@ -37,13 +45,6 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		OUT PlayerViewPointLocation, 
 		OUT PlayerViewPointRotation 
 	);
-
-	/*
-	UE_LOG( LogTemp, Warning, TEXT( "Location : %s / Rotation : %s" ), 
-		*PlayerViewPointLocation.ToString(), 
-		*PlayerViewPointRotation.ToString() 
-	);
-	*/
 
 	// (0,0,0) 위치에서 PlayerViewPointLocation 까지의 벡터 + PlayerViewPointRotation 벡터에 Reach 값을 곱함.
 	// 이는 Player의 View Point에서 Reach 만큼의 거리 앞 까지 Line을 의미함.
