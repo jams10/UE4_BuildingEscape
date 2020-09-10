@@ -38,10 +38,13 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		OUT PlayerViewPointRotation 
 	);
 
+	/*
 	UE_LOG( LogTemp, Warning, TEXT( "Location : %s / Rotation : %s" ), 
 		*PlayerViewPointLocation.ToString(), 
 		*PlayerViewPointRotation.ToString() 
 	);
+	*/
+
 	// (0,0,0) 위치에서 PlayerViewPointLocation 까지의 벡터 + PlayerViewPointRotation 벡터에 Reach 값을 곱함.
 	// 이는 Player의 View Point에서 Reach 만큼의 거리 앞 까지 Line을 의미함.
 	// 이때, Rotation의 경우 unit 벡터 이므로 Reach 값을 곱해(스칼라 곱) 길이를 늘려준 것임.
@@ -57,5 +60,25 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		0,
 		5.f
 	);
+
+	FHitResult Hit;
+	// 특정 거리에 대해 Ray-cast
+	FCollisionQueryParams TraceParams( FName( TEXT( "" ) ), false, GetOwner() );
+
+	GetWorld()->LineTraceSingleByObjectType(
+		OUT Hit,
+		PlayerViewPointLocation,
+		LineTraceEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), // 오브젝트의 콜리전 타입. ECollisionChannel은 enum class
+		TraceParams
+	);
+
+	// Hit 오브젝트 체크
+	AActor* HitActor = Hit.GetActor();
+
+	if( HitActor )
+	{
+		UE_LOG( LogTemp, Warning, TEXT( "Hit : %s" ), *(HitActor->GetName()) );
+	}
 }
 

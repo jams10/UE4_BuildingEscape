@@ -106,3 +106,13 @@
 
 28. 에디터의 PlayerCollision 뷰모드로 레벨에 존재하는 오브젝트들의 콜리전 타입을 확인함으로써 빠뜨린 부분이나 잘못설정한 부분들을 
      한눈에 파악할 수 있다.
+
+29. GetTimeSeconds의 경우 플레이 시작 부터 현재 까지의 시간을 리턴함. 게임이 중단될 경우 카운팅도 중단됨.
+
+30. FCollisionQueryParams
+     (
+	FName InTraceTag,               // 콜리전 체크 시에 사용하는 tag. ECollisionChannel을 사용하면 이 부분은 필요 없음.
+	bool bInTraceComplex,          // complex collision을 사용하는가.
+	const AActor * InIgnoreActor  // 무시할 actor. line이 플레이어 pawn에서 나오는데 이때 라인의 일부분이 pawn 3D 오브젝트와
+                                                     clipping 되므로, 콜리전 체크시에 계속해서 체크될 수 있음. 이를 위해 이 부분에 플레이어 Pawn 할당.
+     )
