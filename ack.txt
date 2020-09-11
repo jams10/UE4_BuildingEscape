@@ -119,3 +119,5 @@
 
 31. Physics Handle
     피지컬 오브젝트를 움직이는 유틸리티 오브젝트 컴포넌트
+
+32. UInputComponent의 경우, 숨겨져 있음. Physics Handle 처럼 블루프린트에 컴포넌트로 추가해주지 않아도 됨. -> 그러나 nullptr 체크는 반드시 할 것.

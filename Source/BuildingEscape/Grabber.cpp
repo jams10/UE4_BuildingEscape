@@ -31,6 +31,16 @@ void UGrabber::BeginPlay()
 	{
 		UE_LOG( LogTemp, Error, TEXT( "%s has no Physics Component." ), *(GetOwner()->GetName()) );
 	}
+
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if( InputComponent )
+	{
+		InputComponent->BindAction( "Grab", IE_Pressed, this, &UGrabber::Grab );
+	}
+	else
+	{
+		UE_LOG( LogTemp, Error, TEXT( "%s has no Input Component." ), *(GetOwner()->GetName()) );
+	}
 }
 
 // Called every frame
@@ -81,5 +91,10 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	{
 		UE_LOG( LogTemp, Warning, TEXT( "Hit : %s" ), *(HitActor->GetName()) );
 	}
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG( LogTemp, Warning, TEXT( "Grabber pressed!" ) );
 }
 
