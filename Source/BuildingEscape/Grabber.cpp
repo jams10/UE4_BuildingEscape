@@ -13,8 +13,6 @@ UGrabber::UGrabber()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 // Called when the game starts
@@ -22,7 +20,22 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Physics handle 컴포넌트 체크
+	FindPhysicsHandle();
+	
+	SetupInputComponent();
+}
+
+// Called every frame
+void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+}
+
+// Physics handle 컴포넌트 체크
+void UGrabber::FindPhysicsHandle()
+{
+
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 	if( PhysicsHandle )
 	{
@@ -31,46 +44,47 @@ void UGrabber::BeginPlay()
 	{
 		UE_LOG( LogTemp, Error, TEXT( "%s has no Physics Component." ), *(GetOwner()->GetName()) );
 	}
+}
+// InputComponent 셋업
+void UGrabber::SetupInputComponent()
+{
 
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 	if( InputComponent )
 	{
+		// 마지막 매개변수에서 Grab 함수를 '호출' 하는 것이 아닌, 어느 함수로 가라는 것을 가리키므로, 함수 뒤에 ()를 적지 않는다.
+		// 즉 Action Key와 이벤트 함수를 묶어주는 것이다.
 		InputComponent->BindAction( "Grab", IE_Pressed, this, &UGrabber::Grab );
-	}
-	else
-	{
-		UE_LOG( LogTemp, Error, TEXT( "%s has no Input Component." ), *(GetOwner()->GetName()) );
+		InputComponent->BindAction( "Grab", IE_Released, this, &UGrabber::Release );
 	}
 }
 
-// Called every frame
-void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UGrabber::Grab()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	UE_LOG( LogTemp, Warning, TEXT( "Grabber pressed!" ) );
 
+	GetFirstPhysicsBodyInReach();
+}
+
+void UGrabber::Release()
+{
+	UE_LOG( LogTemp, Warning, TEXT( "Grabber released!" ) );
+}
+
+FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
+{
 	// Get player's view point
 	FVector PlayerViewPointLocation;
 	FRotator PlayerViewPointRotation;
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint( 
-		OUT PlayerViewPointLocation, 
-		OUT PlayerViewPointRotation 
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+		OUT PlayerViewPointLocation,
+		OUT PlayerViewPointRotation
 	);
 
 	// (0,0,0) 위치에서 PlayerViewPointLocation 까지의 벡터 + PlayerViewPointRotation 벡터에 Reach 값을 곱함.
 	// 이는 Player의 View Point에서 Reach 만큼의 거리 앞 까지 Line을 의미함.
 	// 이때, Rotation의 경우 unit 벡터 이므로 Reach 값을 곱해(스칼라 곱) 길이를 늘려준 것임.
 	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
-	
-	DrawDebugLine(
-		GetWorld(),
-		PlayerViewPointLocation,
-		LineTraceEnd,
-		FColor(0, 255, 0),
-		false,
-		0.f,
-		0,
-		5.f
-	);
 
 	FHitResult Hit;
 	// 특정 거리에 대해 Ray-cast
@@ -80,7 +94,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		OUT Hit,
 		PlayerViewPointLocation,
 		LineTraceEnd,
-		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody), // 오브젝트의 콜리전 타입. ECollisionChannel은 enum class
+		FCollisionObjectQueryParams( ECollisionChannel::ECC_PhysicsBody ), // 오브젝트의 콜리전 타입. ECollisionChannel은 enum class
 		TraceParams
 	);
 
@@ -91,10 +105,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	{
 		UE_LOG( LogTemp, Warning, TEXT( "Hit : %s" ), *(HitActor->GetName()) );
 	}
-}
 
-void UGrabber::Grab()
-{
-	UE_LOG( LogTemp, Warning, TEXT( "Grabber pressed!" ) );
+	return Hit;
 }
 
