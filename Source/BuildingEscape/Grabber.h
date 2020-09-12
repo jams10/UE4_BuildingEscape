@@ -38,4 +38,12 @@ private:
 
 	// Reach 길이 범위에 있고 Physics body를 가진 제일 처음 Actor를 리턴.
 	FHitResult GetFirstPhysicsBodyInReach() const;
+
+	// LineTraceEnd를 리턴(플레이어의 최대 Reach)
+	FVector GetPlayerReach() const;
+
+	// 월드의 플레이어의 위치를 리턴
+	FVector GetPlayerWorldPosition() const;
+
+	FRotator GetPlayerWorldRotation() const;
 };

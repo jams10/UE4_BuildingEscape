@@ -1,8 +1,8 @@
 // Copyrights Jamin Heo 2020 
 
+#include "OpenDoor.h"
 #include "Engine/World.h"
 #include "GameFrameWork/PlayerController.h"
-#include "OpenDoor.h"
 #include "GameFrameWork/Actor.h"
 
 // Sets default values for this component's properties
