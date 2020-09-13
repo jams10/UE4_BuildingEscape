@@ -126,4 +126,14 @@
     이 부분은 매 프레임마다 계속해서 호출되므로, 이 속에 있는 코드들들 줄이는 것이 성능적으로 좋다.
     물체를 집는 Grabber 클래스에서 레이 캐스트를 통해 물체를 판단하는 연산은 Grab 키를 눌렀을 때만 작동 되도록 하는게 매 프레임마다
     호출하여 계속해서 판단하는 것 보다 훨씬 효율적이다.
+
+34. Player가 하늘에 둥둥떠다니는걸 막고 싶으면, Player Pawn에 해당하는 블루프린트에서 먼저 eye heigth를 알맞게 설정하고,
+    Collision Component에서 Simulate Physics로 무게를 주고 Enable Gravity로 중력 적용받게 해주자.
+    여기에 점프를 하거나 위로 조금의 이동마저 제한하고 싶으면 Constraint로 Z축 이동을 잠궈주면 된다.
     
+35. Movable 엑터에 대해 트리거 볼륨과 Overlap 되었을 때 특정 이벤트를 발생시키고 싶으면, 해당 엑터의 콜리전 옵션에서
+    Generate Overlap Event를 켜주어야 한다.
+
+36. 충돌 시에 Player Pawn이 계속해서 미끄러지는 현상. -> CollisionComponent 속성에서 Linear Dampling을 10으로 설정해 제동력을 주어 해결.
+
+37. 포인터 선언시 반드시 nullptr로 초기화 할 것. 그리고 포인터를 활용한 함수 호출이나 관련 작업시 항상 nullptr 체크를 해주어야 함.

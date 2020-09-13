@@ -1,6 +1,7 @@
 // Copyrights Jamin Heo 2020 
 
 #include "OpenDoor.h"
+#include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
 #include "GameFrameWork/PlayerController.h"
 #include "GameFrameWork/Actor.h"
@@ -14,7 +15,6 @@ UOpenDoor::UOpenDoor()
 
 	// ...
 }
-
 
 // Called when the game starts
 // GetOwner를 BeginPlay가 아닌 생성자에 선언할 경우 GetOwner 호출 시 NULL이 리턴될 경우 오류가 발생할 가능성이 있으므로 주의.
@@ -30,10 +30,7 @@ void UOpenDoor::BeginPlay()
 	{
 		UE_LOG( LogTemp, Error, TEXT( "%s has OpenDoor Component, but has no Pressure plate." ), *GetOwner()->GetName() );
 	}
-
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
-
 
 // Called every frame
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -41,7 +38,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
 	// if(ptr) : 포인터가 NULL 포인터인지 여부를 간단하게 체크할 수 있음. null이 아닌 경우 조건을 만족.
-	if( PressurePlate && PressurePlate->IsOverlappingActor( ActorThatOpens ) )
+	if( TotalMassOfActors() >= MassToOpenDoor )
 	{ 
 		OpenDoor( DeltaTime );
 		DoorLastOpened = GetWorld()->GetTimeSeconds();
@@ -82,4 +79,20 @@ void UOpenDoor::CloseDoor( float DeltaTime )
 // CurrentYaw = FMath::FInterpTo( CurrentYaw, OpenAngle, DeltaTime, 2 );
 
 // 현재 PC 에서 DeltaTime 값 : 0.008334
+
+float UOpenDoor::TotalMassOfActors() const
+{
+	float TotalMass = 0.f;
+
+	TArray<AActor*> OverlappingActors;
+
+	if( !PressurePlate ) return;
+	PressurePlate->GetOverlappingActors( OUT OverlappingActors );
+
+	for( AActor* Actor : OverlappingActors )
+	{
+		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+	}
+	return TotalMass;
+}
 

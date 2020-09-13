@@ -30,6 +30,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if( !PhysicsHandle ) return;
 	// 무언가 Grab을 했으면
 	if( PhysicsHandle->GrabbedComponent )
 	{
@@ -66,11 +67,13 @@ void UGrabber::Grab()
 {
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();
 	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+	AActor* ActorHit = HitResult.GetActor();
 
 	// HitResult에 대한 Actor를 리턴함. 포인터 타입.
 	// Hit한 Actor가 있으면, Physics handle을 붙임.
-	if( HitResult.GetActor() )
+	if( ActorHit )
 	{
+		if( !PhysicsHandle ) return;
 		// GrabComponentAtLocationWithRotation = Rotation에 Contraint(제약)을 걸어 Component를 Grab
 		// 그냥 Location만 있는 함수 사용할 경우, 물체를 집어들었을 때 좌우로 계속해서 스윙함.
 		PhysicsHandle->GrabComponentAtLocationWithRotation(
@@ -84,10 +87,8 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-	if( PhysicsHandle->GrabbedComponent )
-	{
-		PhysicsHandle->ReleaseComponent();
-	}
+	if( !PhysicsHandle ) return;
+	PhysicsHandle->ReleaseComponent();
 }
 
 FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
