@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Components/AudioComponent.h"
 #include "Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
 
@@ -27,10 +28,16 @@ public:
 	void OpenDoor( float DeltaTime );
 	void CloseDoor( float DeltaTime );
 	float TotalMassOfActors() const;
+	void FindAudioComponent();
+	void FindPressurePlate();
+
+	bool OpenDoorSound = false;
+	bool CloseDoorSound = false;
 
 private:
 	float InitialYaw;
 	float CurrentYaw;
+	bool isPlayed = false;
 
 	UPROPERTY( EditAnywhere )
 		float OpenAngle = 90.f;
@@ -52,4 +59,6 @@ private:
 	UPROPERTY( EditAnywhere )
 		ATriggerVolume* PressurePlate = nullptr;
 	
+	UPROPERTY()
+		UAudioComponent* AudioComponent = nullptr;
 };

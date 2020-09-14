@@ -28,8 +28,10 @@ protected:
 private:
 	float Reach = 100.f;
 
-	UPhysicsHandleComponent* PhysicsHandle = nullptr;
-	UInputComponent* InputComponent = nullptr;
+	UPROPERTY()
+		UPhysicsHandleComponent* PhysicsHandle = nullptr;
+	UPROPERTY()
+		UInputComponent* InputComponent = nullptr;
 
 	void FindPhysicsHandle();
 	void SetupInputComponent();

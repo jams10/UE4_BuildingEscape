@@ -26,10 +26,8 @@ void UOpenDoor::BeginPlay()
 	CurrentYaw = InitialYaw;
 	OpenAngle += InitialYaw;
 
-	if( !PressurePlate )
-	{
-		UE_LOG( LogTemp, Error, TEXT( "%s has OpenDoor Component, but has no Pressure plate." ), *GetOwner()->GetName() );
-	}
+	FindPressurePlate();
+	FindAudioComponent();
 }
 
 // Called every frame
@@ -60,7 +58,13 @@ void UOpenDoor::OpenDoor( float DeltaTime )
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation( DoorRotation );
 
-	//UE_LOG( LogTemp, Warning, TEXT( "Yaw is : %f" ), GetOwner()->GetActorRotation().Yaw );
+	if( !AudioComponent ) { return; }
+	if( OpenDoorSound )
+	{
+		AudioComponent->Play();
+		OpenDoorSound = false;
+	}
+	CloseDoorSound = true;
 }
 
 void UOpenDoor::CloseDoor( float DeltaTime )
@@ -71,6 +75,14 @@ void UOpenDoor::CloseDoor( float DeltaTime )
 	FRotator DoorRotation = GetOwner()->GetActorRotation();
 	DoorRotation.Yaw = CurrentYaw;
 	GetOwner()->SetActorRotation( DoorRotation );
+
+	if( !AudioComponent ) { return; }
+	if( CloseDoorSound )
+	{
+		AudioComponent->Play();
+		CloseDoorSound = false;
+	}
+	OpenDoorSound = true;
 }
 
 // Frame에 독립적으로 수행. 상수 스텝 만큼 interpolate 0초 : 0도 -> 1초 : 45도 -> 2초 : 90도 (Linear Interpolation)
@@ -86,7 +98,7 @@ float UOpenDoor::TotalMassOfActors() const
 
 	TArray<AActor*> OverlappingActors;
 
-	if( !PressurePlate ) return;
+	if( !PressurePlate ) { return 0.f; }
 	PressurePlate->GetOverlappingActors( OUT OverlappingActors );
 
 	for( AActor* Actor : OverlappingActors )
@@ -94,5 +106,22 @@ float UOpenDoor::TotalMassOfActors() const
 		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
 	}
 	return TotalMass;
+}
+
+void UOpenDoor::FindAudioComponent()
+{
+	AudioComponent = GetOwner()->FindComponentByClass<UAudioComponent>();
+	if( !AudioComponent )
+	{
+		UE_LOG( LogTemp, Error, TEXT( "%s has no AudioComponent." ), *GetOwner()->GetName() );
+	}
+}
+
+void UOpenDoor::FindPressurePlate()
+{
+	if( !PressurePlate )
+	{
+		UE_LOG( LogTemp, Error, TEXT( "%s has OpenDoor Component, but has no Pressure plate." ), *GetOwner()->GetName() );
+	}
 }
 

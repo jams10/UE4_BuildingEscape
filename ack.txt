@@ -137,3 +137,5 @@
 36. 충돌 시에 Player Pawn이 계속해서 미끄러지는 현상. -> CollisionComponent 속성에서 Linear Dampling을 10으로 설정해 제동력을 주어 해결.
 
 37. 포인터 선언시 반드시 nullptr로 초기화 할 것. 그리고 포인터를 활용한 함수 호출이나 관련 작업시 항상 nullptr 체크를 해주어야 함.
+
+38. AudioComponent의 Auto Active 옵션은 Play를 누르자 마자 사운드가 플레이 되게 하는 옵션이다.
